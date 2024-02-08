@@ -1,0 +1,39 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://hooks.slack.com/services/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"></script>
+    <script src="https://unpkg.com/obniz@3.x/obniz.js" crossorigin="anonymous" ></script>
+  </head>
+  <body>
+    <div id="obniz-debug"></div>
+  <script>
+   　let obniz = new Obniz("OBNIZ_ID_HERE");
+      let led;
+   　 obniz.onconnect = async function() {
+        var led = obniz.wired("LED", {anode: 0, cathode: 1});
+        
+        if (Obniz.App.isCloudRunning()) {
+          const req = Obniz.App.req();
+          
+          if(req.body.slack){
+            obniz.display.print("学校から通知です");
+            await obniz.wait(5000);
+            led.on();
+            await obniz.wait(500);
+            led.on();
+        await obniz.wait(500);
+        led.off();
+          }
+          
+          Obniz.App.done({
+            status: 'success',
+            test: 'success!'
+          });
+        }
+      };
+   </script>
+   </body>
+   </html>
